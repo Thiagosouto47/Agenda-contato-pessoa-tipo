@@ -37,9 +37,9 @@ public class ContatoService {
 	}
 	
 	public Contato atualizarContato(Integer id, Contato contato) {
-		 Contato ContatoAtual = contatoRepository.findById(id).get();
-		 BeanUtils.copyProperties(contato, ContatoAtual, "id");
-		 return contatoRepository.save(ContatoAtual);
+		 Contato contatoAtual = contatoRepository.findById(id).get();
+		 BeanUtils.copyProperties(contato, contatoAtual, "id");
+		 return contatoRepository.save(contatoAtual);
 		}
 
 }
