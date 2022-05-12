@@ -126,3 +126,22 @@ public class PessoaServiceTest {
         Assertions.assertEquals(2, returnedPessoa.getId(), "The version should be incremented");
     }
 }
+
+ @Test
+    void testeNomePessoaNaoPodeSerMenor3Caracteres() {
+    	
+    	 Pessoa pessoa = new Pessoa("th","053.163.188-09","312348-4","M"); 
+
+    	 UnsupportedOperationException exception = Assertions.assertThrows(UnsupportedOperationException.class, ()-> pessoaService.SalvarPessoa(pessoa));
+    	        
+    	 assertEquals("Nome precisa de 3 caracteres", exception.getMessage());
+    	
+    }
+    
+    @Test 
+	 void testCadastrandoPessoaInvalido() throws Exception {
+       PessoaService pessoaService = new PessoaService();
+       
+		assertThrows(NullPointerException.class,
+				() -> pessoaService.SalvarPessoa(new Pessoa("thiago","12","312348-4","M")));
+	}
