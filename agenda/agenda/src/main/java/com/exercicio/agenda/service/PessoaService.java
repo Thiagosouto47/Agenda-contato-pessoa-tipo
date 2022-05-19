@@ -51,6 +51,10 @@ public class PessoaService {
 		Pessoa rgExiste = pessoaRepository.findByRg(pessoa.getRg());
 		Pessoa cpfExiste = pessoaRepository.findByCpf(pessoa.getCpf()); 
 		
+		if (pessoa.getNome().length()< 3) {
+			throw new UnsupportedOperationException("Nome precisa de 3 caracteres");
+		}
+		
 		if (rgExiste!= null) {
 			throw new UnsupportedOperationException("RG já cadastrado no sistema");
 		}
