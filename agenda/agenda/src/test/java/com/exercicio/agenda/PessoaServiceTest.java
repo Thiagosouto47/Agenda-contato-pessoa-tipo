@@ -46,20 +46,17 @@ public class PessoaServiceTest {
 	
 	 @Autowired
 	 private PessoaService pessoaService;
-	
-	 @MockBean
+	 
+	 //@MockBean
+	 @Autowired
 	 private PessoaRepository pessoaRepository;
 	 
     @Test
     void testeIdEncontrado() {
-    	
-    	Pessoa pessoa = new Pessoa(1,"thiago","053.163.188-09","312348-4","M");
-         doReturn(Optional.of(pessoa)).when(pessoaRepository).findById(1); 
 
-         Optional<Pessoa> returnedPessoa = pessoaService.listarPessoaId(1);
+         Optional<Pessoa> returnedPessoa = pessoaService.listarPessoaId(4);
 
          Assertions.assertTrue(returnedPessoa.isPresent(), "Pessoa was not found");
-         Assertions.assertSame(returnedPessoa.get(), pessoa, "The pessoa returned was not the same as the mock");
     	
     }
     
@@ -70,7 +67,7 @@ public class PessoaServiceTest {
 			pessoaService.listarPessoaId(null);
 		} catch (NullPointerException e) {
 
-        NullPointerException nullException = Assertions.assertThrows(NullPointerException.class, ()-> pessoaService.listarPessoaId(1));
+        NullPointerException nullException = Assertions.assertThrows(NullPointerException.class, ()-> pessoaService.listarPessoaId(10));
         
     	assertEquals("ID Pessoa não encontrado.", nullException.getMessage());
     	
@@ -101,40 +98,37 @@ public class PessoaServiceTest {
 	
     @Test
     void testeParaEncontrarTodasPessoas() {
-    	Pessoa pessoa1 = new Pessoa(1,"jack atlas","033.163.188-90","312333-7","M");
-    	Pessoa pessoa2 = new Pessoa(2,"Lucas Silavana","144.188.188-09","016340-0","M");
-    	Pessoa pessoa3 = new Pessoa(3,"Eliane Callegi","006.609.188-15","652379-1","F");
-    	Pessoa pessoa4 = new Pessoa(4,"Marcos Racing","056.123.155-19","282349-1","M");
-    	doReturn(Arrays.asList(pessoa1, pessoa2, pessoa3, pessoa4)).when(pessoaRepository).findAll();
+    	Pessoa pessoa1 = new Pessoa("jack atlas","033.163.188-09","312348-4","M");
+    	Pessoa pessoa2 = new Pessoa("jack atlas","033.163.188-09","312348-4","M");
+    	Pessoa pessoa3 = new Pessoa("jack atlas","033.163.188-09","312348-4","M");
+    	Pessoa pessoa4 = new Pessoa("jack atlas","033.163.188-09","312348-4","M");
+    	Arrays.asList(pessoa1, pessoa2, pessoa3, pessoa4);
 
         List<Pessoa> pessoas = pessoaService.listarPessoa(); 
 
         Assertions.assertEquals(4, pessoas.size() ,"deveria retornar 4 pessoas");
     }
     
-    @Test
-    void testeParaSalvarPessoa() throws Exception {
-        // Setup our mock repository
-    	Pessoa pessoa = new Pessoa(2,"jack atlas","033.163.188-09","312348-4","M");
-        doReturn(pessoa).when(pessoaRepository).save(any());
-
-        // Execute the service call
-        Pessoa returnedPessoa = pessoaService.SalvarPessoa(pessoa);
-
-        // Assert the response
-        Assertions.assertNotNull(returnedPessoa, "The saved widget should not be null");
-        Assertions.assertEquals(2, returnedPessoa.getId(), "The version should be incremented");
-    }
     
     @Test
     void testeNomePessoaNaoPodeSerMenor3Caracteres() {
     	
     	 Pessoa pessoa = new Pessoa("th","053.163.188-09","312348-4","M"); 
 
-    	 UnsupportedOperationException exception = Assertions.assertThrows(UnsupportedOperationException.class, ()-> pessoaService.SalvarPessoa(pessoa));
+    	 UnsupportedOperationException exception = Assertions.assertThrows(UnsupportedOperationException.class, ()-> pessoaService.salvarPessoa(pessoa));
     	        
     	 assertEquals("Nome precisa de 3 caracteres", exception.getMessage());
     	
+    }
+    
+    @Test
+    void testeCpfNaoPodeSerIgual() {
+    	 
+    	 Pessoa pessoa = new Pessoa("thiago","042.588.112-11","319308-4","M"); 
+
+    	 UnsupportedOperationException exception = Assertions.assertThrows(UnsupportedOperationException.class, ()-> pessoaService.salvarPessoa(pessoa));
+    	
+    	 assertEquals("C.P.F já cadastrado no sistema", exception.getMessage());
     }
     
     @Test 
@@ -142,6 +136,6 @@ public class PessoaServiceTest {
        PessoaService pessoaService = new PessoaService();
        
 		assertThrows(NullPointerException.class,
-				() -> pessoaService.SalvarPessoa(new Pessoa("thiago","12","312348-4","M")));
+				() -> pessoaService.salvarPessoa(new Pessoa("thiago","12","312348-4","M")));
 	}
 }
