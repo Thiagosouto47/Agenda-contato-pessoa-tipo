@@ -68,7 +68,7 @@ public class PessoaService {
 		
 	}
 	
-	public void deletarPessoa(@Valid @PathVariable Integer id) {
+	public void deletarPessoa(@Valid @PathVariable Integer id) throws Exception{
 		
 		 Optional<Pessoa> pessoa = pessoaRepository.findById(id);
 		
