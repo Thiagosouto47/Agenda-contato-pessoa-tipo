@@ -26,7 +26,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	@ExceptionHandler(UnsupportedOperationException.class)
+	@ExceptionHandler(value={UnsupportedOperationException.class, MethodArgumentTypeMismatchException.class, NumberFormatException.class})
 	public final ResponseEntity<ExceptionResponse> handlerBadRequestException(Exception ex, WebRequest request){
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),request.getDescription(false));
 		return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
