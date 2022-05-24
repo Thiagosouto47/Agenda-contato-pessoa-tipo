@@ -69,7 +69,14 @@ public class PessoaService {
 	}
 	
 	public void deletarPessoa(@Valid @PathVariable Integer id) {
-		pessoaRepository.deleteById(id);
+		
+		 Optional<Pessoa> pessoa = pessoaRepository.findById(id);
+		
+		if (pessoa.isPresent()) {
+			pessoaRepository.deleteById(id);
+		} else {
+			throw new NotFoundException("Id não pode ser deletado, pois não foi existe");
+		}   
 	}
 
     public Pessoa atualizarPessoa(@Valid  Integer id, Pessoa pessoa) {
